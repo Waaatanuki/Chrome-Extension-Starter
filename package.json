@@ -1,0 +1,37 @@
+{
+  "name": "vite-vue3-chrome-extension-starter",
+  "version": "0.0.0",
+  "keyword": "Chrome extension, Vite, Vue, Vue3",
+  "watch": {
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,vue,js,html,scss",
+      "runOnChangeOnly": false
+    }
+  },
+  "scripts": {
+    "build": "vite build && npm run copy",
+    "watch": "npm-watch",
+    "copy": "node ./scripts/copyAssets.ts",
+    "prettier": "prettier --write ."
+  },
+  "dependencies": {
+    "@iconify-json/carbon": "^1.1.16",
+    "element-plus": "^2.2.32",
+    "pinia": "^2.0.32",
+    "unocss": "^0.50.4",
+    "vue": "^3.2.47"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.217",
+    "@types/node": "^18.14.2",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "fast-glob": "^3.2.12",
+    "npm-watch": "^0.11.0",
+    "prettier": "^2.8.4",
+    "sass": "^1.58.3",
+    "vite": "^4.1.4"
+  }
+}
