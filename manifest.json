@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "vite-vue3-chrome-extension-starter",
+  "name": "chrome-extension-starter",
   "version": "0.0.1",
-  "description": "vite-vue3-chrome-extension-starter",
+  "description": "chrome-extension-starter",
   "icons": {
     "16": "./assets/logo.png",
     "48": "./assets/logo.png",
