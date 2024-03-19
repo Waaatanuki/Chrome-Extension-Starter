@@ -12,8 +12,8 @@
 
   // Auto fix
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true,
-    "source.organizeImports": false
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
   },
 
   // Silent the stylistic rules in you IDE, but still auto fix them
@@ -26,7 +26,8 @@
     { "rule": "*-dangle", "severity": "off" },
     { "rule": "*-newline", "severity": "off" },
     { "rule": "*quotes", "severity": "off" },
-    { "rule": "*semi", "severity": "off" }
+    { "rule": "*semi", "severity": "off" },
+    { "rule": "*console", "severity": "off" }
   ],
 
   // Enable eslint for all supported languages

@@ -28,12 +28,14 @@
     "@types/archiver": "^5.3.3",
     "@types/chrome": "^0.0.246",
     "@types/node": "^20.8.6",
+    "@types/webextension-polyfill": "^0.10.7",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
     "@unocss/eslint-config": "^0.56.5",
     "@unocss/reset": "^0.56.5",
     "@vitejs/plugin-vue": "^4.4.0",
     "@vueuse/core": "^10.5.0",
+    "@vueuse/shared": "^10.9.0",
     "archiver": "^6.0.1",
     "dayjs": "^1.11.10",
     "element-plus": "^2.4.0",
@@ -52,6 +54,7 @@
     "unplugin-icons": "^0.17.0",
     "unplugin-vue-components": "^0.25.2",
     "vite": "^4.4.11",
-    "vue": "^3.3.4"
+    "vue": "^3.3.4",
+    "webextension-polyfill": "^0.10.0"
   }
 }
