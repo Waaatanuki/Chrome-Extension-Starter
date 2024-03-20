@@ -1,1 +1,1 @@
-chrome.devtools.panels.create('MyPanel', '', '/src/views/panel/main.html')
+browser.devtools.panels.create('MyPanel', '', '/src/views/panel/main.html')

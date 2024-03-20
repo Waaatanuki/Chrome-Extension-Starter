@@ -1,8 +1,15 @@
 <script setup lang="ts">
+import { sendMessage } from 'webext-bridge/popup'
 import { storageDemo } from '~/logic/storage'
 
-function hi() {
+async function hi() {
   ElMessage.success(storageDemo.value)
+
+  const [tab] = await browser.tabs.query({ currentWindow: true, active: true })
+  console.log(tab)
+
+  const resp = await sendMessage('hello', { title: 'tab.title!!!!' }, { context: 'content-script', tabId: tab.id! })
+  console.log(resp)
 }
 </script>
 
