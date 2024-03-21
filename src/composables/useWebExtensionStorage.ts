@@ -1,14 +1,12 @@
 import { StorageSerializers } from '@vueuse/core'
 import { toValue, tryOnScopeDispose, watchWithFilter } from '@vueuse/shared'
-import { storage } from 'webextension-polyfill'
 import type { StorageLikeAsync, UseStorageAsyncOptions } from '@vueuse/core'
 import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
-import type { Storage } from 'webextension-polyfill'
 
 export type WebExtensionStorageOptions<T> = UseStorageAsyncOptions<T>
 
 // https://github.com/vueuse/vueuse/blob/658444bf9f8b96118dbd06eba411bb6639e24e88/packages/core/useStorage/guess.ts
-export function guessSerializerType(rawInit: unknown) {
+export function guessSerializerType<T extends(string | number | boolean | object | null)>(rawInit: T) {
   return rawInit == null
     ? 'any'
     : rawInit instanceof Set
@@ -30,15 +28,15 @@ export function guessSerializerType(rawInit: unknown) {
 
 const storageInterface: StorageLikeAsync = {
   removeItem(key: string) {
-    return storage.local.remove(key)
+    return chrome.storage.local.remove(key)
   },
 
   setItem(key: string, value: string) {
-    return storage.local.set({ [key]: value })
+    return chrome.storage.local.set({ [key]: value })
   },
 
   async getItem(key: string) {
-    const storedData = await storage.local.get(key)
+    const storedData = await chrome.storage.local.get(key)
 
     return storedData[key]
   },
@@ -51,7 +49,7 @@ const storageInterface: StorageLikeAsync = {
  * @param initialValue
  * @param options
  */
-export function useWebExtensionStorage<T>(
+export function useWebExtensionStorage<T extends(string | number | boolean | object | null)>(
   key: string,
   initialValue: MaybeRefOrGetter<T>,
   options: WebExtensionStorageOptions<T> = {},
@@ -70,12 +68,12 @@ export function useWebExtensionStorage<T>(
   } = options
 
   const rawInit: T = toValue(initialValue)
-  const type = guessSerializerType(rawInit)
+  const type = guessSerializerType<T>(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
 
-  async function read(event?: { key: string; newValue: string | null }) {
+  async function read(event?: { key: string, newValue: string | null }) {
     if (event && event.key !== key)
       return
 
@@ -103,10 +101,10 @@ export function useWebExtensionStorage<T>(
     }
   }
 
-  read()
+  void read()
 
   if (listenToStorageChanges) {
-    const listener = async (changes: Record<string, Storage.StorageChange>) => {
+    const listener = async (changes: Record<string, chrome.storage.StorageChange>) => {
       for (const [key, change] of Object.entries(changes)) {
         await read({
           key,
@@ -115,10 +113,10 @@ export function useWebExtensionStorage<T>(
       }
     }
 
-    storage.onChanged.addListener(listener)
+    chrome.storage.onChanged.addListener(listener)
 
     tryOnScopeDispose(() => {
-      storage.onChanged.removeListener(listener)
+      chrome.storage.onChanged.removeListener(listener)
     })
   }
 

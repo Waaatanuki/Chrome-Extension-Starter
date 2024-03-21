@@ -5,7 +5,7 @@ import { storageDemo } from '~/logic/storage'
 async function hi() {
   ElMessage.success(storageDemo.value)
 
-  const [tab] = await browser.tabs.query({ currentWindow: true, active: true })
+  const [tab] = await chrome.tabs.query({ currentWindow: true, active: true })
   console.log(tab)
 
   const resp = await sendMessage('hello', { title: 'tab.title!!!!' }, { context: 'content-script', tabId: tab.id! })

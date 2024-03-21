@@ -30,7 +30,6 @@
     "@types/archiver": "^6.0.2",
     "@types/chrome": "^0.0.263",
     "@types/node": "^20.11.30",
-    "@types/webextension-polyfill": "^0.10.7",
     "@unocss/eslint-config": "^0.58.6",
     "@unocss/reset": "^0.58.6",
     "@vitejs/plugin-vue": "^5.0.4",
@@ -55,7 +54,6 @@
     "unplugin-vue-components": "^0.26.0",
     "vite": "^5.1.6",
     "vue": "^3.4.21",
-    "webext-bridge": "^6.0.1",
-    "webextension-polyfill": "^0.10.0"
+    "webext-bridge": "^6.0.1"
   }
 }
