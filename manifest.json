@@ -16,11 +16,12 @@
     "activeTab",
     "scripting",
     "tabs",
-    "webRequest"
+    "webRequest",
+    "sidePanel"
   ],
   "host_permissions": ["<all_urls>"],
   "background": {
-    "service_worker": "background.mjs",
+    "service_worker": "background.js",
     "type": "module"
   },
   "action": {
@@ -39,5 +40,8 @@
     }
   ],
   "options_page": "src/views/options/main.html",
-  "devtools_page": "src/views/devtools/main.html"
+  "devtools_page": "src/views/devtools/main.html",
+  "side_panel": {
+    "default_path": "src/views/sidepanel/main.html"
+  }
 }
