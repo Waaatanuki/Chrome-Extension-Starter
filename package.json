@@ -13,10 +13,9 @@
     }
   },
   "scripts": {
-    "build": "run-s clear build:web build:prepare build:background build:js",
+    "build": "run-s clear build:web build:prepare build:js",
     "build:prepare": "esno scripts/prepare.ts",
     "build:web": "vite build",
-    "build:background": "vite build --config vite.config.background.mts",
     "build:js": "vite build --config vite.config.content.mts",
     "zip": "esno scripts/zip.ts",
     "watch": "npm-watch",
