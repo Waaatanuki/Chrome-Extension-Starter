@@ -13,6 +13,7 @@
     }
   },
   "scripts": {
+    "dev": "vite --port 1234 --open",
     "build": "run-s clear build:web build:prepare build:js",
     "build:prepare": "esno scripts/prepare.ts",
     "build:web": "vite build",
