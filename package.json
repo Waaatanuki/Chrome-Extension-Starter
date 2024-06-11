@@ -17,7 +17,7 @@
     "build": "run-s clear build:web build:prepare build:js",
     "build:prepare": "esno scripts/prepare.ts",
     "build:web": "vite build",
-    "build:js": "vite build --config vite.config.content.mts",
+    "build:js": "vite build --config vite.config.content.mts && vite build --config vite.config.inject.mts",
     "zip": "esno scripts/zip.ts",
     "watch": "npm-watch",
     "clear": "rimraf --glob dist",

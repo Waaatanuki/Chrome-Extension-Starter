@@ -39,6 +39,12 @@
       "js": ["content_script.mjs"]
     }
   ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inject.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
   "options_page": "src/views/options/main.html",
   "devtools_page": "src/views/devtools/main.html",
   "side_panel": {
