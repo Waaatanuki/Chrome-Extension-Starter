@@ -17,7 +17,8 @@
     "scripting",
     "tabs",
     "webRequest",
-    "sidePanel"
+    "sidePanel",
+    "notifications"
   ],
   "host_permissions": ["<all_urls>"],
   "background": {

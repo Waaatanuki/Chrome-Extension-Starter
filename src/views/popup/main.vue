@@ -10,6 +10,16 @@ async function hi() {
 
   const resp = await sendMessage('hello', { title: 'tab.title!!!!' }, { context: 'content-script', tabId: tab.id! })
   console.log(resp)
+
+  const AUDIO_URL = 'https://prd-game-a5-granbluefantasy.akamaized.net/assets/sound/se/treasure_se_2.mp3'
+  const audio = new Audio(AUDIO_URL)
+  chrome.notifications.create({
+    iconUrl: '/assets/logo.png',
+    message: 'hi!!',
+    type: 'basic',
+    title: '通知',
+  })
+  audio.play()
 }
 </script>
 
