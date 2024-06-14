@@ -4,6 +4,7 @@ dist
 dist-ssr
 *.local
 .eslintcache
+*.zip
 
 types/auto-imports.d.ts
 types/components.d.ts
