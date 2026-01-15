@@ -1,12 +1,12 @@
-import { StorageSerializers, throttleFilter } from '@vueuse/core'
-import { toValue, tryOnScopeDispose, watchWithFilter } from '@vueuse/shared'
 import type { StorageLikeAsync, UseStorageAsyncOptions } from '@vueuse/core'
-import type { MaybeRefOrGetter, RemovableRef } from '@vueuse/shared'
+import type { RemovableRef } from '@vueuse/shared'
+import { StorageSerializers } from '@vueuse/core'
+import { tryOnScopeDispose } from '@vueuse/shared'
 
 export type WebExtensionStorageOptions<T> = UseStorageAsyncOptions<T>
 
 // https://github.com/vueuse/vueuse/blob/658444bf9f8b96118dbd06eba411bb6639e24e88/packages/core/useStorage/guess.ts
-export function guessSerializerType<T extends(string | number | boolean | object | null)>(rawInit: T) {
+export function guessSerializerType(rawInit: unknown) {
   return rawInit == null
     ? 'any'
     : rawInit instanceof Set
@@ -38,7 +38,7 @@ const storageInterface: StorageLikeAsync = {
   async getItem(key: string) {
     const storedData = await chrome.storage.local.get(key)
 
-    return storedData[key]
+    return storedData[key] as string
   },
 }
 
@@ -49,7 +49,7 @@ const storageInterface: StorageLikeAsync = {
  * @param initialValue
  * @param options
  */
-export function useWebExtensionStorage<T extends(string | number | boolean | object | null)>(
+export function useWebExtensionStorage<T>(
   key: string,
   initialValue: MaybeRefOrGetter<T>,
   options: WebExtensionStorageOptions<T> = {},
@@ -61,14 +61,13 @@ export function useWebExtensionStorage<T extends(string | number | boolean | obj
     writeDefaults = true,
     mergeDefaults = false,
     shallow,
-    eventFilter = throttleFilter(200),
     onError = (e) => {
       console.error(e)
     },
   } = options
 
   const rawInit: T = toValue(initialValue)
-  const type = guessSerializerType<T>(rawInit)
+  const type = guessSerializerType(rawInit)
 
   const data = (shallow ? shallowRef : ref)(initialValue) as Ref<T>
   const serializer = options.serializer ?? StorageSerializers[type]
@@ -103,13 +102,41 @@ export function useWebExtensionStorage<T extends(string | number | boolean | obj
 
   void read()
 
+  async function write() {
+    try {
+      await (
+        data.value == null
+          ? storageInterface.removeItem(key)
+          : storageInterface.setItem(key, await serializer.write(data.value))
+      )
+    }
+    catch (error) {
+      onError(error)
+    }
+  }
+
+  const { pause: pauseWatch, resume: resumeWatch } = watch(
+    data,
+    write,
+    {
+      flush,
+      deep,
+    },
+  )
+
   if (listenToStorageChanges) {
     const listener = async (changes: Record<string, chrome.storage.StorageChange>) => {
-      for (const [key, change] of Object.entries(changes)) {
-        await read({
-          key,
-          newValue: change.newValue as string | null,
-        })
+      try {
+        pauseWatch()
+        for (const [key, change] of Object.entries(changes)) {
+          await read({
+            key,
+            newValue: change.newValue as string | null,
+          })
+        }
+      }
+      finally {
+        resumeWatch()
       }
     }
 
@@ -119,23 +146,6 @@ export function useWebExtensionStorage<T extends(string | number | boolean | obj
       chrome.storage.onChanged.removeListener(listener)
     })
   }
-
-  watchWithFilter(
-    data,
-    async () => {
-      try {
-        await (data.value == null ? storageInterface.removeItem(key) : storageInterface.setItem(key, await serializer.write(data.value)))
-      }
-      catch (error) {
-        onError(error)
-      }
-    },
-    {
-      flush,
-      deep,
-      eventFilter,
-    },
-  )
 
   return data as RemovableRef<T>
 }
