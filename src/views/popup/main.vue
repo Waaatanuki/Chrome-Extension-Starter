@@ -13,8 +13,9 @@ async function hi() {
 
   const AUDIO_URL = 'https://prd-game-a5-granbluefantasy.akamaized.net/assets/sound/se/treasure_se_2.mp3'
   const audio = new Audio(AUDIO_URL)
+
   chrome.notifications.create({
-    iconUrl: '/assets/logo.png',
+    iconUrl: '/public/logo.png',
     message: 'hi!!',
     type: 'basic',
     title: '通知',
@@ -28,6 +29,7 @@ async function hi() {
     <div w-full flex items-center justify-end>
       <div class="icon-btn" i-carbon-sun dark:i-carbon-moon @click="toggleDark()" />
     </div>
+    <h1>popup</h1>
     <h1>Hello {{ storageDemo }}!</h1>
     <el-input v-model="storageDemo" />
     <div btn type="primary" @click="hi">

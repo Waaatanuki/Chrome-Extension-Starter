@@ -8,17 +8,7 @@ import { onMessage } from 'webext-bridge/content-script'
     return 'hahah'
   })
 
-  function injectScript() {
-    const script = document.createElement('script')
-    script.src = chrome.runtime.getURL('inject.js')
-    script.async = true
-    const doc = document.head || document.documentElement
-    doc.appendChild(script)
-
-    document.addEventListener('variableRetrieved', (e) => {
-      console.log('cj', e.detail)
-    })
-  }
-
-  injectScript()
+  document.addEventListener('foo', (e: any) => {
+    console.log('cj', e.detail)
+  })
 })()

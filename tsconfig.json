@@ -6,12 +6,12 @@
     "lib": ["DOM", "ESNext"],
     "baseUrl": ".",
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "paths": {
       "~/*": ["src/*"]
     },
     "resolveJsonModule": true,
-    "types": ["vite/client", "chrome", "node"],
+    "types": ["vite/client", "chrome", "node", "jquery"],
     "strict": true,
     "noUnusedLocals": true,
     "esModuleInterop": true,

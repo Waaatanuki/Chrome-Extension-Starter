@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>jQuery 初始化</title>
+    <!-- 在线导入 jQuery -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+  </head>
+  <body>
+    <h1>jQuery 已加载</h1>
+    <button id="testBtn">发送测试请求</button>
+    <div id="result"></div>
+
+    <script>
+      // 验证 jQuery 是否成功加载
+      $(document).ready(function () {
+        console.log('jQuery 版本: ' + $.fn.jquery)
+        $('body').append('<p>jQuery 初始化成功！</p>')
+
+        $('#testBtn').click(function () {
+          $('#result').html('<p>正在请求...</p>')
+
+          $.ajax({
+            url: 'https://jsonplaceholder.typicode.com/posts/1',
+            method: 'GET',
+            success: function (data) {
+              $('#result').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>')
+            },
+            error: function (xhr, status, error) {
+              $('#result').html('<p style="color:red;">请求失败: ' + error + '</p>')
+            },
+          })
+        })
+      })
+    </script>
+  </body>
+</html>

@@ -1,15 +1,16 @@
-import { extname } from 'node:path'
-import { defineConfig } from 'vite'
+import { crx } from '@crxjs/vite-plugin'
 import Vue from '@vitejs/plugin-vue'
-import fg from 'fast-glob'
 import UnoCSS from 'unocss/vite'
-import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
-import type { UserConfig } from 'vite'
+import Components from 'unplugin-vue-components/vite'
+import { defineConfig } from 'vite'
+import zip from 'vite-plugin-zip-pack'
+import manifest from './manifest.config.js'
+import { name, version } from './package.json'
 import { r } from './scripts/utils'
 
-export const sharedConfig: UserConfig = {
+export default defineConfig({
   resolve: {
     alias: {
       '~/': `${r('src')}/`,
@@ -17,6 +18,7 @@ export const sharedConfig: UserConfig = {
   },
   plugins: [
     Vue(),
+    crx({ manifest }),
     AutoImport({
       imports: ['vue', '@vueuse/core'],
       dirs: [r('src/composables')],
@@ -28,38 +30,14 @@ export const sharedConfig: UserConfig = {
       resolvers: [ElementPlusResolver()],
       dts: r('types/components.d.ts'),
     }),
-    UnoCSS(),
+    UnoCSS({ inspector: false }),
+    zip({ outDir: 'release', outFileName: `${name}-${version}.zip` }),
   ],
-  optimizeDeps: {
-    include: [
-      'vue',
-      '@vueuse/core',
-    ],
-  },
-}
-
-function getEntry() {
-  const list: { [key: string]: string } = {}
-  fg.sync('src/views/**/main.ts').forEach((file) => {
-    const path = file.slice(0, file.length - extname(file).length)
-    const name = path.split('/').at(-2)
-    list[`assets/${name}`] = `${r(`${path}.html`)}`
-  })
-  list.background = r('src/background/index.ts')
-  return list
-}
-
-export default defineConfig({
-  ...sharedConfig,
-  build: {
-    outDir: 'dist',
-    emptyOutDir: false,
-    sourcemap: true,
-    rollupOptions: {
-      input: getEntry(),
-      output: {
-        entryFileNames: '[name].js',
-      },
+  server: {
+    cors: {
+      origin: [
+        /chrome-extension:\/\//,
+      ],
     },
   },
 })

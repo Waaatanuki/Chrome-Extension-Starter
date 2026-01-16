@@ -1,33 +1,22 @@
 {
   "name": "chrome-extension-starter",
   "type": "module",
-  "version": "0.0.0",
-  "watch": {
-    "build": {
-      "patterns": [
-        "src"
-      ],
-      "extensions": "ts,vue,js,html,scss",
-      "runOnChangeOnly": false
-    }
-  },
+  "version": "0.0.1",
+  "description": "chrome-extension-starter",
   "scripts": {
-    "dev": "vite --port 1234 --open",
-    "build": "run-s clear build:web build:prepare build:js",
-    "build:prepare": "tsx scripts/prepare.ts",
-    "build:web": "vite build",
-    "build:js": "vite build --config vite.config.content.mts && vite build --config vite.config.inject.mts",
-    "zip": "tsx scripts/zip.ts",
-    "watch": "npm-watch",
+    "dev": "vite",
+    "build": "vite build",
     "clear": "rimraf --glob dist",
     "up": "taze major -I",
     "lint": "eslint --cache ."
   },
   "devDependencies": {
     "@antfu/eslint-config": "^7.0.1",
+    "@crxjs/vite-plugin": "^2.3.0",
     "@iconify-json/carbon": "^1.2.18",
     "@types/archiver": "^7.0.0",
     "@types/chrome": "^0.1.33",
+    "@types/jquery": "^3.5.33",
     "@types/node": "^25.0.8",
     "@unocss/eslint-config": "^66.6.0",
     "@unocss/reset": "^66.6.0",
@@ -38,6 +27,7 @@
     "dayjs": "^1.11.19",
     "element-plus": "^2.13.1",
     "eslint": "^9.39.2",
+    "eslint-plugin-format": "^1.3.1",
     "fast-glob": "^3.3.3",
     "npm-run-all": "^4.1.5",
     "npm-watch": "^0.13.0",
@@ -48,6 +38,7 @@
     "unplugin-icons": "^23.0.1",
     "unplugin-vue-components": "^31.0.0",
     "vite": "^7.3.1",
+    "vite-plugin-zip-pack": "^1.2.4",
     "vue": "^3.5.26",
     "webext-bridge": "^6.0.1"
   }

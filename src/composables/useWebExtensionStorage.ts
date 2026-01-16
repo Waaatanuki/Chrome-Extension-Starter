@@ -115,7 +115,7 @@ export function useWebExtensionStorage<T>(
     }
   }
 
-  const { pause: pauseWatch, resume: resumeWatch } = watch(
+  const { pause: pauseWatch, resume: resumeWatch } = pausableWatch(
     data,
     write,
     {
